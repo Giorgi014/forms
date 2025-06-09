@@ -1,1 +1,12 @@
-// clear
+@mixin displayCenter($justify, $align){
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+
+.form_container{
+    @include displayCenter(center, flex-start);
+    width: 100%;
+    gap: 30px;
+}

@@ -1,0 +1,43 @@
+@mixin displayCenter($justify, $align) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+$white: #ffffff;
+
+.student_form {
+  background-color: $white;
+  width: 500px;
+  font-family: "Fira code", "Fira Mono", monospace;
+  .student_form_title {
+    font-size: 30px;
+  }
+  .student_profile {
+    @include displayCenter(flex-start, center);
+    flex-direction: column;
+    width: 100%;
+    margin-top: 15px;
+    .student_info_cont {
+      @include displayCenter(flex-start, center);
+      flex-direction: column;
+      width: 100%;
+      .input_cont {
+        width: 90%;
+        input,
+        select {
+          margin-bottom: 15px;
+          width: 100%;
+          font-size: 16px;
+          padding: 7px;
+          border-radius: 5px;
+          border: 1px solid rgb(156, 156, 156);
+          outline: none;
+          &:hover {
+            border: 1px solid rgb(0, 0, 0);
+          }
+        }
+      }
+    }
+  }
+}
