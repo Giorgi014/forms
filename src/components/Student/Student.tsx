@@ -15,13 +15,13 @@ const Student = () => {
     <Editor
       value={code}
       onValueChange={code => setCode(code)}
-      highlight={code => highlight(code, languages.json)}
+      highlight={code => highlight(code, languages.json, 'json')}
       padding={10}
       style={{
         fontFamily: '"Fira code", "Fira Mono", monospace',
-        fontSize: 20,
+        fontSize: 18,
         backgroundColor: "white",
-        maxWidth: "500px",
+        width: "600px",
         minHeight: "100vh"
       }}
     />
