@@ -9,7 +9,16 @@ const Form = () => {
         <Student />
       </div>
       <div className="student_form_value">
-        <StudentForm />
+        <StudentForm
+          defaultProperties={[
+            {
+              type: 'string',
+              name: "fullName",
+              label: "Full Name",
+              required: true
+            }
+          ]}
+        />
       </div>
     </div>
   );

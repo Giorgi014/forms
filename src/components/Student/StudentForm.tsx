@@ -1,7 +1,32 @@
+import { useForm } from "react-hook-form";
 import { Button } from "../Button/Button";
 import "./StudentForm.scss";
+import type { FormSchema } from "../types";
 
-export const StudentForm = () => {
+
+type Props = {
+  defaultProperties: FormSchema['properties']
+}
+
+export const StudentForm = ({defaultProperties}: Props) => {
+  const {register, watch, setValue} = useForm<FormSchema>({
+    defaultValues: {
+      type: 'object',
+      name: "profile",
+      label: "Student Profile",
+      properties: defaultProperties
+    },
+  });
+
+  const properties = watch('properties')
+ properties.map(property => {
+    if(property.type === 'array'){
+      setValue(property.name)
+    }
+  })
+
+ 
+
   return (
     <div className="student_form">
       <h1 className="student_form_title">Student profile</h1>
@@ -9,15 +34,15 @@ export const StudentForm = () => {
         <div className="student_info_cont">
           <div className="full_name_input input_cont">
             <label htmlFor="full_name">Full name *</label>
-            <input type="text" placeholder="Full name *" id="full_name" />
+            <input type="text" placeholder="Full name *" id="full_name" {...register("userName")} />
           </div>
           <div className="email_input input_cont">
             <label htmlFor="email">Email *</label>
-            <input type="email" placeholder="Email *" id="email" />
+            <input type="email" placeholder="Email *" id="email" {...register("email")} />
           </div>
           <div className="countries_input input_cont">
             <label htmlFor="countries">Countries *</label>
-            <select name="countries" id="countries">
+            <select id="countries" {...register("countries")} name="countries">
               <option>Countries</option>
               <option value="GE">Georgia</option>
               <option value="US">United States</option>
