@@ -1,31 +1,39 @@
 import { useForm } from "react-hook-form";
 import { Button } from "../Button/Button";
+import type { FormSchema, FormSchemaType } from "../types";
+import { useEffect } from "react";
 import "./StudentForm.scss";
-import type { FormSchema } from "../types";
-
 
 type Props = {
-  defaultProperties: FormSchema['properties']
-}
+  defaultProperties: FormSchema["properties"];
+  onFormChange: (data: FormSchemaType) => void;
+};
 
-export const StudentForm = ({defaultProperties}: Props) => {
-  const {register, watch, setValue} = useForm<FormSchema>({
+export const StudentForm = ({ defaultProperties, onFormChange }: Props) => {
+  const { register, watch, setValue } = useForm<FormSchema>({
     defaultValues: {
-      type: 'object',
+      type: "object",
       name: "profile",
       label: "Student Profile",
-      properties: defaultProperties
+      properties: defaultProperties,
     },
   });
 
-  const properties = watch('properties')
- properties.map(property => {
-    if(property.type === 'array'){
-      setValue(property.name)
-    }
-  })
+  //   const properties = watch('properties')
+  //  properties.map(property => {
+  //     if(property.type === 'array'){
+  //       setValue(property.name)
+  //     }
+  //   })
 
- 
+  const formData = watch();
+
+  useEffect(() => {
+    onFormChange(formData);
+  }, [formData, onFormChange]);
+
+const getPropIndex = (name: string) =>
+    defaultProperties.findIndex((p) => p.name === name);
 
   return (
     <div className="student_form">
@@ -34,15 +42,25 @@ export const StudentForm = ({defaultProperties}: Props) => {
         <div className="student_info_cont">
           <div className="full_name_input input_cont">
             <label htmlFor="full_name">Full name *</label>
-            <input type="text" placeholder="Full name *" id="full_name" {...register("userName")} />
+            <input
+              type="text"
+              placeholder="Full name *"
+              id="full_name"
+              {...register(`properties.${getPropIndex("fullName")}.value`)}
+            />
           </div>
           <div className="email_input input_cont">
             <label htmlFor="email">Email *</label>
-            <input type="email" placeholder="Email *" id="email" {...register("email")} />
+            <input
+              type="email"
+              placeholder="Email *"
+              id="email"
+               {...register(`properties.${getPropIndex("email")}.value`)}
+            />
           </div>
           <div className="countries_input input_cont">
             <label htmlFor="countries">Countries *</label>
-            <select id="countries" {...register("countries")} name="countries">
+            <select id="countries"  {...register(`properties.${getPropIndex("country")}.value`)} name="countries">
               <option>Countries</option>
               <option value="GE">Georgia</option>
               <option value="US">United States</option>
@@ -50,7 +68,12 @@ export const StudentForm = ({defaultProperties}: Props) => {
           </div>
           <div className="phone_input input_cont">
             <label htmlFor="phone">Phone *</label>
-            <input type="tel" placeholder="Phone *" id="phone" />
+            <input
+              type="tel"
+              placeholder="Phone *"
+              id="phone"
+              {...register(`properties.${getPropIndex("phone")}.value`)}
+            />
           </div>
           <div className="finished_university_years_input input_cont">
             <label htmlFor="finished_university_years">
@@ -60,6 +83,7 @@ export const StudentForm = ({defaultProperties}: Props) => {
               type="number"
               placeholder="Finished university years"
               id="finished_university_years"
+              {...register(`properties.${getPropIndex("universityYears")}.value`)}
             />
           </div>
         </div>
@@ -74,6 +98,7 @@ export const StudentForm = ({defaultProperties}: Props) => {
                     type="text"
                     placeholder="Technology *"
                     id="technology"
+                    {...register("properties.primary_technologies.0.name")}
                   />
                 </div>
                 <div className="experience_input">

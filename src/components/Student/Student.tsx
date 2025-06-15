@@ -1,16 +1,23 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs";
 import "prismjs/components/prism-json";
 import "prismjs/themes/prism.css"; 
-import { jsonData } from "../json-data";
+// import { jsonData } from "../json-data";
 import "./Student.scss";
+import type { FormSchema, FormSchemaType } from "../types";
 
-const Student = () => {
-  const [code, setCode] = React.useState(
-    JSON.stringify(jsonData, null, 2)
+type props = {
+  initialData: FormSchema
+}
+
+const Student = ({ initialData }: props) => {
+  const [code, setCode] = useState(
+    JSON.stringify(initialData, null, 2)
   );
-  
+   useEffect(() => {
+    setCode(JSON.stringify(initialData, null, 2));
+  }, [initialData]);
   return (
     <Editor
       value={code}
