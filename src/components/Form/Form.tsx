@@ -41,7 +41,8 @@ const Form = () => {
           ]}
         /> */}
         <StudentForm
-          defaultProperties={jsonData.properties}
+          // defaultProperties={jsonData.properties}
+          defaultProperties={formData}
           onFormChange={handleFormChange}
         />
       </div>
