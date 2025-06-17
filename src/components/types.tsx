@@ -23,7 +23,7 @@ type FormPropertiesSchema = InputAttributes & {
   properties?: Array<FormPropertiesSchema>
   options?: Array<FromSchemaOption>
   item?: Array<FormPropertiesSchema>
-  // value?: any
+  value?: any
 }
 
 export type FormSchema = {

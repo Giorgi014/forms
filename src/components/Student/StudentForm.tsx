@@ -14,74 +14,74 @@ type RenderProps = {
   properties: Array<FormPropertiesSchema>;
 };
 
+type Props = {
+  defaultProperties: FormSchema["properties"];
+  onFormChange: (data: FormSchemaType) => void;
+};
+
 const DynamicRenderForm = ({ path, properties }: RenderProps) => {
   const { register } = useFormContext();
 
   return (
     <>
-      {properties.map((field, index) => {
-        const fieldPath = `${path}.${index}`;
+      <div className="student_info_cont">
+        {properties.map((field, index) => {
+          const fieldPath = `${path}.${index}`;
 
-        if (field.type === "object") {
-          return (
-            <div key={field.name} className="inline_cont">
-              <h3>{field.label}</h3>
-              <DynamicRenderForm
-                path={`${fieldPath}.properties`}
-                properties={field.properties!}
-              />
-            </div>
-          );
-        } else if (field.type === "array") {
-          return (
-            <div key={field.name} className="inline_cont">
-              <DynamicArrayRenderer path={fieldPath} field={field} />
-            </div>
-          );
-        } else if (field.type === "enum") {
-          return (
-            <div key={field.name} className="input_cont">
-              <label htmlFor={field.label}>{field.label}</label>
-              <select id={field.name} {...register(`${fieldPath}.value`)}>
-                {/* {field.options?.map((option) => {
-                  <option key={option.value} value={option.value}>
-                    {option.value}
-                  </option>;
-                })} */}
-                {field.options?.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.value}
-                  </option>
-                ))}
-              </select>
-            </div>
-          );
-        } else if (field.type === "boolean") {
-          return (
-            <div key={field.name} className="question_container">
-              <input
-                type="checkbox"
-                id={field.name}
-                {...register(`${fieldPath}.value`)}
-              />
-              <p className="pc_and_internet">Have a computer and internet</p>
-            </div>
-          );
-        } else {
-          return (
-            <div key={field.name} className="input_cont">
-              <label htmlFor={field.name}>{field.name}</label>
-              <input
-                id={field.name}
-                type={field.inputType}
-                placeholder={field.placeholder}
-                required={field.required}
-                {...register(`${fieldPath}.value`)}
-              />
-            </div>
-          );
-        }
-      })}
+          if (field.type === "object") {
+            return (
+              <div key={field.name} className="inline_cont">
+                <h3>{field.label}</h3>
+                <DynamicRenderForm
+                  path={`${fieldPath}.properties`}
+                  properties={field.properties!}
+                />
+              </div>
+            );
+          } else if (field.type === "array") {
+            return (
+              <div key={field.name} className="inline_cont">
+                <DynamicArrayRenderer path={fieldPath} field={field} />
+              </div>
+            );
+          } else if (field.type === "enum") {
+            return (
+              <div key={field.name} className="input_cont">
+                <label htmlFor={field.label}>{field.label}</label>
+                <select id="countries" {...register(`${fieldPath}.value`)}>
+                  <option value="Country">Country</option>
+                  <option value="ge">Georgia</option>
+                  <option value="ua">Ukraine</option>
+                </select>
+              </div>
+            );
+          } else if (field.type === "boolean") {
+            return (
+              <div key={field.name} className="question_container">
+                <input
+                  type="checkbox"
+                  id={field.name}
+                  {...register(`${fieldPath}.value`)}
+                />
+                <p className="pc_and_internet">Have a computer and internet</p>
+              </div>
+            );
+          } else {
+            return (
+              <div key={field.name} className="input_cont">
+                <label htmlFor={field.label}>{field.label}</label>
+                <input
+                  id={field.name}
+                  type={field.type}
+                  placeholder={field.label + " *"}
+                  required={field.required}
+                  {...register(`${fieldPath}.value`)}
+                />
+              </div>
+            );
+          }
+        })}
+      </div>
     </>
   );
 };
@@ -101,11 +101,11 @@ const DynamicArrayRenderer = ({
 
   const addField = () => {
     const newFieldTemplete = JSON.parse(JSON.stringify(field.item![0]));
-    if (newFieldTemplete.properties) {
-      newFieldTemplete.properties.forEach((prop: any) => {
-        delete prop.value;
-      });
-    }
+    // if (newFieldTemplete.properties) {
+      // newFieldTemplete.properties.forEach((prop: any) => {
+      //   delete prop.value;
+      // });
+    // }
     append(newFieldTemplete);
   };
 
@@ -115,10 +115,12 @@ const DynamicArrayRenderer = ({
       <div className="add_info_cont">
         {fields.map((arrayItem, index) => (
           <div key={arrayItem.id} className="primary_technologies">
-            <DynamicRenderForm
-              path={`${path}.item.${index}.properties`}
-              properties={(arrayItem as any).properties}
-            />
+            <div className="technology_experience">
+              <DynamicRenderForm
+                path={`${path}.item.${index}.properties`}
+                properties={(arrayItem as any).properties}
+              />
+            </div>
             <Button variant="remove" onClick={() => remove(index)}>
               REMOVE
             </Button>
@@ -134,14 +136,9 @@ const DynamicArrayRenderer = ({
   );
 };
 
-type Props = {
-  defaultProperties: FormSchema["properties"];
-  onFormChange: (data: FormSchemaType) => void;
-};
-
 export const StudentForm = ({ defaultProperties, onFormChange }: Props) => {
   const methods = useForm<FormSchema>({ defaultValues: defaultProperties });
-  const { watch, handleSubmit } = methods;
+  const { watch, handleSubmit, reset } = methods;
 
   const formData = watch();
   useEffect(() => {
