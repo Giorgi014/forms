@@ -8,20 +8,22 @@ import "./Student.scss";
 import type { FormSchema, FormSchemaType } from "../types";
 
 type props = {
-  initialData: FormSchema
+  initialData: FormSchema;
+  onCodeChange:(value: FormSchema) => void;
 }
 
-const Student = ({ initialData }: props) => {
-  const [code, setCode] = useState(
-    JSON.stringify(initialData, null, 2)
-  );
-   useEffect(() => {
-    setCode(JSON.stringify(initialData, null, 2));
-  }, [initialData]);
+const Student = ({ initialData, onCodeChange }: props) => {
+  // const [code, setCode] = useState(
+  //   JSON.stringify(initialData, null, 2)
+  // );
+  //  useEffect(() => {
+  //   setCode(JSON.stringify(initialData, null, 2));
+  // }, [initialData]);
   return (
     <Editor
-      value={code}
-      onValueChange={code => setCode(code)}
+      value={initialData}
+      // onValueChange={code => setCode(code)}
+      onValueChange={onCodeChange}
       highlight={code => highlight(code, languages.json, 'json')}
       padding={10}
       style={{

@@ -140,7 +140,11 @@ export const StudentForm = ({ defaultProperties, onFormChange }: Props) => {
   const methods = useForm<FormSchema>({ defaultValues: defaultProperties });
   const { watch, handleSubmit, reset } = methods;
 
+  useEffect(() => {
+    reset(defaultProperties);
+  }, [defaultProperties, reset]);
   const formData = watch();
+  
   useEffect(() => {
     onFormChange(formData);
   }, [formData, onFormChange]);
