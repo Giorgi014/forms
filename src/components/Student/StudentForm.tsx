@@ -15,7 +15,8 @@ type RenderProps = {
 };
 
 type Props = {
-  defaultProperties: FormSchema["properties"];
+  // defaultProperties: FormSchema["properties"];
+  defaultProperties: FormSchema;
   onFormChange: (data: FormSchemaType) => void;
 };
 
@@ -23,7 +24,7 @@ const DynamicRenderForm = ({ path, properties }: RenderProps) => {
   const { register } = useFormContext();
 
   return (
-    <>
+    // <>
       <div className="student_info_cont">
         {properties.map((field, index) => {
           const fieldPath = `${path}.${index}`;
@@ -63,7 +64,7 @@ const DynamicRenderForm = ({ path, properties }: RenderProps) => {
                   id={field.name}
                   {...register(`${fieldPath}.value`)}
                 />
-                <p className="pc_and_internet">Have a computer and internet</p>
+                <p className="pc_and_internet">{field.label}</p>
               </div>
             );
           } else {
@@ -72,7 +73,7 @@ const DynamicRenderForm = ({ path, properties }: RenderProps) => {
                 <label htmlFor={field.label}>{field.label}</label>
                 <input
                   id={field.name}
-                  type={field.type}
+                  type={field.type || field.inputType}
                   placeholder={field.label + " *"}
                   required={field.required}
                   {...register(`${fieldPath}.value`)}
@@ -82,7 +83,7 @@ const DynamicRenderForm = ({ path, properties }: RenderProps) => {
           }
         })}
       </div>
-    </>
+    // </>
   );
 };
 
@@ -101,11 +102,11 @@ const DynamicArrayRenderer = ({
 
   const addField = () => {
     const newFieldTemplete = JSON.parse(JSON.stringify(field.item![0]));
-    // if (newFieldTemplete.properties) {
-      // newFieldTemplete.properties.forEach((prop: any) => {
-      //   delete prop.value;
-      // });
-    // }
+    if (newFieldTemplete.properties) {
+      newFieldTemplete.properties.forEach((prop: any) => {
+        delete prop.value;
+      });
+    }
     append(newFieldTemplete);
   };
 
@@ -143,6 +144,7 @@ export const StudentForm = ({ defaultProperties, onFormChange }: Props) => {
   useEffect(() => {
     reset(defaultProperties);
   }, [defaultProperties, reset]);
+  
   const formData = watch();
   
   useEffect(() => {

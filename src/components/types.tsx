@@ -32,5 +32,3 @@ export type FormSchema = {
   label: string
   properties: Array<FormPropertiesSchema>,
 }
-
-

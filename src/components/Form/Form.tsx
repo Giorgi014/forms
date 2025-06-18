@@ -6,6 +6,34 @@ import { jsonData } from "../json-data";
 import type { FormSchema, FormSchemaType } from "../types";
 import "./Form.scss";
 
+const applyFormValues = (target, source) => {
+  const newSchema = JSON.parse(JSON.stringify(target));
+
+  const recurse = (targetNode, sourceNode) => {
+    if (!targetNode || !sourceNode) return;
+
+    if (sourceNode.hasOwnProperty("value")) {
+      targetNode.value = sourceNode.value;
+    }
+
+    if (targetNode.properties && sourceNode.properties) {
+      sourceNode.properties.map((childSource, index) => {
+        recurse(targetNode.properties[index], childSource);
+      });
+    }
+
+    if (targetNode.item && sourceNode.item && Array.isArray(sourceNode.item)) {
+      targetNode.item = sourceNode.item.map((sourceItem) => {
+        const template = JSON.parse(JSON.stringify(targetNode.item[0]));
+        recurse(template, sourceItem);
+        return template;
+      });
+    }
+  };
+  recurse(newSchema, source);
+  return newSchema;
+};
+
 const Form = () => {
   const [formData, setFormData] = useState<FormSchema>(jsonData);
   const [code, setCode] = useState(JSON.stringify(jsonData, null, 2));
@@ -23,22 +51,32 @@ const Form = () => {
     //     ...jsonData,
     //     properties: updatedProperties,
     //   });
-    
-    if (JSON.stringify(data) !== JSON.stringify(formData)) {
-      setFormData(data);
-      setCode(JSON.stringify(data, null, 2));
+
+    const newMergedData = applyFormValues(formData, data);
+    const newCode = JSON.stringify(newMergedData, null, 2);
+
+    if (newCode !== code) {
+      setFormData(newMergedData);
+      setCode(newCode);
     }
+
+    // if (JSON.stringify(data) !== JSON.stringify(formData)) {
+    //   setFormData(data);
+    //   setCode(JSON.stringify(data, null, 2));
+    // }
   };
 
-    const handleCodeChange = (newCode: FormSchemaType) => {
-      setCode(newCode);
-      try {
-        const newFormData = JSON.parse(newCode);
+  const handleCodeChange = (newCode: FormSchemaType) => {
+    setCode(newCode);
+    try {
+      const newFormData = JSON.parse(newCode);
+      if (JSON.stringify(newFormData) !== JSON.stringify(formData)) {
         setFormData(newFormData);
-      } catch (error) {
-        console.error("Invalid JSON:", error);
       }
-    };
+    } catch (error) {
+      console.error("Invalid JSON:", error);
+    }
+  };
   // };
   return (
     <div className="form_container">
@@ -58,7 +96,7 @@ const Form = () => {
         /> */}
         <StudentForm
           // defaultProperties={jsonData.properties}
-          key={JSON.stringify(formData)}
+          // key={JSON.stringify(formData)}
           defaultProperties={formData}
           onFormChange={handleFormChange}
         />
