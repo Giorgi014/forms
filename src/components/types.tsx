@@ -16,7 +16,7 @@ type FromSchemaOption = {
 }
 
 
-type FormPropertiesSchema = InputAttributes & {
+export type FormPropertiesSchema = InputAttributes & {
   type: FormSchemaType,
   label?: string
   inputType?: InputAttributes["type"]

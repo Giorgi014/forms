@@ -5,7 +5,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { Button } from "../Button/Button";
-import type { FormSchema, FormSchemaType } from "../types";
+import type { FormPropertiesSchema, FormSchema, FormSchemaType } from "../types";
 import { useEffect } from "react";
 import "./StudentForm.scss";
 
