@@ -14,12 +14,6 @@ type RenderProps = {
   properties: Array<FormPropertiesSchema>;
 };
 
-type Props = {
-  // defaultProperties: FormSchema["properties"];
-  defaultProperties: FormSchema;
-  onFormChange: (data: FormSchemaType) => void;
-};
-
 const DynamicRenderForm = ({ path, properties }: RenderProps) => {
   const { register } = useFormContext();
 
@@ -135,6 +129,12 @@ const DynamicArrayRenderer = ({
       </div>
     </div>
   );
+};
+
+type Props = {
+  // defaultProperties: FormSchema["properties"];
+  defaultProperties: FormSchema;
+  onFormChange: (data: FormSchemaType) => void;
 };
 
 export const StudentForm = ({ defaultProperties, onFormChange }: Props) => {

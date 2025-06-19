@@ -3,13 +3,13 @@ import Student from "../Student/Student";
 import { StudentForm } from "../Student/StudentForm";
 import { jsonData } from "../json-data";
 // import { data } from "react-router-dom";
-import type { FormSchema, FormSchemaType } from "../types";
+import type { FormPropertiesSchema, FormSchema, FormSchemaType } from "../types";
 import "./Form.scss";
 
-const applyFormValues = (target, source) => {
-  const newSchema = JSON.parse(JSON.stringify(target));
+const applyFormValues = (target: FormSchema, source: FormSchema): FormSchema => {
+  const newSchema: FormSchema = JSON.parse(JSON.stringify(target));
 
-  const recurse = (targetNode, sourceNode) => {
+  const recurse = (targetNode: FormPropertiesSchema, sourceNode: FormPropertiesSchema) => {
     if (!targetNode || !sourceNode) return;
 
     if (sourceNode.hasOwnProperty("value")) {
@@ -23,7 +23,7 @@ const applyFormValues = (target, source) => {
     }
 
     if (targetNode.item && sourceNode.item && Array.isArray(sourceNode.item)) {
-      targetNode.item = sourceNode.item.map((sourceItem) => {
+      targetNode.item = sourceNode.item.map((sourceItem: FormPropertiesSchema) => {
         const template = JSON.parse(JSON.stringify(targetNode.item[0]));
         recurse(template, sourceItem);
         return template;
@@ -36,7 +36,7 @@ const applyFormValues = (target, source) => {
 
 const Form = () => {
   const [formData, setFormData] = useState<FormSchema>(jsonData);
-  const [code, setCode] = useState(JSON.stringify(jsonData, null, 2));
+  const [code, setCode] = useState<string>(JSON.stringify(jsonData, null, 2));
 
   const handleFormChange = (data: FormSchema) => {
     //   const updatedProperties = jsonData.properties.map((prop) => {
@@ -66,10 +66,10 @@ const Form = () => {
     // }
   };
 
-  const handleCodeChange = (newCode: FormSchemaType) => {
+  const handleCodeChange = (newCode: string) => {
     setCode(newCode);
     try {
-      const newFormData = JSON.parse(newCode);
+      const newFormData: FormSchema = JSON.parse(newCode);
       if (JSON.stringify(newFormData) !== JSON.stringify(formData)) {
         setFormData(newFormData);
       }
