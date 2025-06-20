@@ -1,4 +1,6 @@
-export const jsonData = {
+import type { FormSchema } from "./types";
+
+export const jsonData: FormSchema = {
   type: "object",
   name: "profile",
   label: "Student profile",

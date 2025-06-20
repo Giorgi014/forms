@@ -5,10 +5,11 @@ import "prismjs/themes/prism.css";
 // import { jsonData } from "../json-data";
 import "./Student.scss";
 // import type { FormSchema, FormSchemaType } from "../types";
-import type { FormSchemaType } from "../types";
+// import type { FormSchemaType } from "../types";
 
 type props = {
-  initialData: FormSchemaType;
+  // initialData: FormSchemaType;
+  initialData: string;
   // onCodeChange:(value: FormSchema) => void;
   onCodeChange: (value: string) => void;
 };

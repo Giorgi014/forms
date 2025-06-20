@@ -18,13 +18,13 @@ const applyFormValues = (target: FormSchema, source: FormSchema): FormSchema => 
 
     if (targetNode.properties && sourceNode.properties) {
       sourceNode.properties.map((childSource, index) => {
-        recurse(targetNode.properties[index], childSource);
+        recurse(targetNode.properties![index], childSource);
       });
     }
 
     if (targetNode.item && sourceNode.item && Array.isArray(sourceNode.item)) {
       targetNode.item = sourceNode.item.map((sourceItem: FormPropertiesSchema) => {
-        const template = JSON.parse(JSON.stringify(targetNode.item[0]));
+        const template = JSON.parse(JSON.stringify(targetNode.item![0]));
         recurse(template, sourceItem);
         return template;
       });

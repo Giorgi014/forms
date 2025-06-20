@@ -5,7 +5,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { Button } from "../Button/Button";
-import type { FormPropertiesSchema, FormSchema, FormSchemaType } from "../types";
+import type { FormPropertiesSchema, FormSchema } from "../types";
 import { useEffect } from "react";
 import "./StudentForm.scss";
 
@@ -134,7 +134,8 @@ const DynamicArrayRenderer = ({
 type Props = {
   // defaultProperties: FormSchema["properties"];
   defaultProperties: FormSchema;
-  onFormChange: (data: FormSchemaType) => void;
+  onFormChange: (data: FormSchema) => void;
+  // onFormChange: (data: string) => void;
 };
 
 export const StudentForm = ({ defaultProperties, onFormChange }: Props) => {
